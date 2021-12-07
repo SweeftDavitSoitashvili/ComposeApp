@@ -48,7 +48,7 @@ fun MyScreen(names: List<String> = listOf("Android", "Developers"), mainViewMode
             Divider()
         }
 
-        chooser {
+        Chooser {
             chooserState = it
         }
 
@@ -62,7 +62,7 @@ fun MyScreen(names: List<String> = listOf("Android", "Developers"), mainViewMode
 }
 
 @Composable
-fun chooser(updateChoice: (String) -> Unit) {
+fun Chooser(updateChoice: (String) -> Unit) {
     Button(onClick = { updateChoice(versionOne) }) {
         Text(text = "Version One")
     }

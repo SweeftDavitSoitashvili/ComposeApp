@@ -4,9 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animate
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -36,18 +44,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyScreen(names: List<String> = listOf("Android", "Developers"), mainViewModel: MainViewModel?) {
-
+fun MyScreen(mainViewModel: MainViewModel?) {
     var chooserState by remember {
         mutableStateOf("")
     }
 
-    Column {
-        for (name in names) {
-            Greeting(name = name)
-            Divider()
-        }
-
+    Column(modifier = Modifier.fillMaxHeight()) {
+        NamedList(names = List(1000) { "Android Development" }, modifier = Modifier.weight(1f))
         Chooser {
             chooserState = it
         }
@@ -58,6 +61,16 @@ fun MyScreen(names: List<String> = listOf("Android", "Developers"), mainViewMode
             mainViewModel!!.printVersionTwo()
         }
         chooserState = ""
+    }
+}
+
+@Composable
+fun NamedList(names: List<String>, modifier: Modifier = Modifier) {
+    LazyColumn(modifier) {
+        items(items = names) {
+            Greeting(name = it)
+            Divider()
+        }
     }
 }
 
@@ -84,10 +97,23 @@ fun MyApp(content: @Composable () -> Unit) {
 
 @Composable
 fun Greeting(name: String) {
+    var isSelected by remember {
+        mutableStateOf(false)
+    }
+
+    val targetColor by animateColorAsState(
+        targetValue = if (isSelected) MaterialTheme.colors.primary else Color.White,
+        tween(durationMillis = 4000)
+    )
+
     Text(
         text = "Hello $name!", modifier = Modifier
             .padding(20.dp)
-            .background(Color.Green)
+            .background(color = targetColor)
+            .clickable {
+                isSelected = !isSelected
+            }
+            .height(30.dp)
     )
 }
 

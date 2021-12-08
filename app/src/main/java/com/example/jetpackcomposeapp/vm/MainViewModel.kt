@@ -13,6 +13,7 @@ class MainViewModel @Inject constructor(
     @DataSourceOne private val dataSourceOneImpl: DataSource,
     @DataSourceTwo private val dataSourceTwoImpl: DataSource
 ) : ViewModel() {
+
     fun printVersionOne() {
         d("asdsadsadsa", dataSourceOneImpl.getData())
     }
@@ -20,4 +21,5 @@ class MainViewModel @Inject constructor(
     fun printVersionTwo() {
         d("asdsadsadsa", dataSourceTwoImpl.getData())
     }
+
 }

@@ -1,7 +1,9 @@
 package com.example.jetpackcomposeapp.vm
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.jetpackcomposeapp.data.datasources.DataSource
+import com.example.jetpackcomposeapp.data.models.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -10,8 +12,16 @@ class MainViewModel @Inject constructor(
     private val dataSource: DataSource
 ) : ViewModel() {
 
-    suspend fun getAllUsers() = dataSource.getAllUsers()
+    val users = mutableStateOf<List<User>>(listOf())
 
-    suspend fun getUser(id : Int) = dataSource.getUser(id)
+    val user = mutableStateOf(User(0, "0", "0", "0", "0"))
+
+    suspend fun getAllUsers() {
+        users.value = dataSource.getAllUsers()
+    }
+
+    suspend fun getUser(id : Int) {
+        user.value = dataSource.getUser(id)
+    }
 
 }

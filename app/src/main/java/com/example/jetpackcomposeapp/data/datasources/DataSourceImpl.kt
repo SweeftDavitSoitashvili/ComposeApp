@@ -1,5 +1,6 @@
 package com.example.jetpackcomposeapp.data.datasources
 
+import android.util.Log.d
 import com.example.jetpackcomposeapp.data.ApiService
 import com.example.jetpackcomposeapp.data.models.User
 import javax.inject.Inject
@@ -10,6 +11,7 @@ class DataSourceImpl @Inject constructor(private val apiService: ApiService) : D
     }
 
     override suspend fun getUser(id: Int): User {
+        d("asdsadsadsadsadsa", apiService.getUser(id).toString())
         return apiService.getUser(id).user
     }
 

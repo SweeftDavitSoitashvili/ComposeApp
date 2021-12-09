@@ -9,6 +9,6 @@ interface ApiService {
     @GET("users")
     suspend fun getAllUsers() : AllUser
 
-    @GET("user/{id}")
+    @GET("users/{id}")
     suspend fun getUser(@Path("id") id : Int) : SingleUser
 }

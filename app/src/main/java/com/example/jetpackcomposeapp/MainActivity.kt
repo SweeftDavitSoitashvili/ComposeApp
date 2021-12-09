@@ -1,87 +1,96 @@
 package com.example.jetpackcomposeapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log.d
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.jetpackcomposeapp.data.models.User
 import com.example.jetpackcomposeapp.ui.theme.JetpackComposeAppTheme
 import com.example.jetpackcomposeapp.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
-private const val versionOne = "VersionOne"
-private const val versionTwo = "VersionTwo"
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val mainViewModel: MainViewModel by viewModels()
+     private val mainViewModel : MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-            MyApp {
-                MyScreen(mainViewModel = mainViewModel)
+        CoroutineScope(Dispatchers.Main).launch {
+            val users = mainViewModel.getAllUsers()
+            setContent {
+                MyApp {
+                    MyScreen(users = users)
+
+                }
+            }
+        }
+    }
+}
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun MyScreen(users : List<User>) {
+    LazyColumn(Modifier.fillMaxWidth(), horizontalAlignment = CenterHorizontally) {
+        items(items = users) { user ->
+            UserItem(user = user) {
+
             }
         }
     }
 }
 
 @Composable
-fun MyScreen(mainViewModel: MainViewModel?) {
-    var chooserState by remember {
-        mutableStateOf("")
-    }
+fun UserItem(user : User, itemCallback : (User) -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .clickable {
+                itemCallback(user)
+            }) {
+        Text(text = user.avatar, style = TextStyle(
+            color = androidx.compose.ui.graphics.Color.Cyan,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        ))
 
-    Column(modifier = Modifier.fillMaxHeight()) {
-        NamedList(names = List(1000) { "Android Development" }, modifier = Modifier.weight(1f))
-        Chooser {
-            chooserState = it
+        Column {
+            Text(
+                text = "First name :  ${user.firstName}", style = TextStyle(
+                    color = androidx.compose.ui.graphics.Color.Green,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                ), modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            Text(text = "Last name : ${user.lastName}", style = TextStyle(
+                color = androidx.compose.ui.graphics.Color.Red,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center
+            ), modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp))
         }
-
-        if (chooserState == versionOne) {
-            mainViewModel!!.printVersionOne()
-        } else if (chooserState == versionTwo) {
-            mainViewModel!!.printVersionTwo()
-        }
-        chooserState = ""
-    }
-}
-
-@Composable
-fun NamedList(names: List<String>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier) {
-        items(items = names) {
-            Greeting(name = it)
-            Divider()
-        }
-    }
-}
-
-@Composable
-fun Chooser(updateChoice: (String) -> Unit) {
-    Button(onClick = { updateChoice(versionOne) }) {
-        Text(text = "Version One")
-    }
-
-    Button(onClick = { updateChoice(versionTwo) }) {
-        Text(text = "Version Two")
     }
 }
 
@@ -95,33 +104,5 @@ fun MyApp(content: @Composable () -> Unit) {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    var isSelected by remember {
-        mutableStateOf(false)
-    }
 
-    val targetColor by animateColorAsState(
-        targetValue = if (isSelected) MaterialTheme.colors.primary else Color.White,
-        tween(durationMillis = 4000)
-    )
-
-    Text(
-        text = "Hello $name!", modifier = Modifier
-            .padding(20.dp)
-            .background(color = targetColor)
-            .clickable {
-                isSelected = !isSelected
-            }
-            .height(30.dp)
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    MyApp {
-        MyScreen(mainViewModel = null)
-    }
-}
 

@@ -12,11 +12,11 @@ data class SingleUser(
     val user : User
     )
 
-data class User(val id : Int,
-                val email : String,
+data class User(val id : Int? = null,
+                val email : String? = null,
                 @SerializedName("first_name")
-                val firstName : String,
+                val firstName : String? = null,
                 @SerializedName("last_name")
-                val lastName : String,
-                val avatar : String
+                val lastName : String? = null,
+                val avatar : String? = null
 )

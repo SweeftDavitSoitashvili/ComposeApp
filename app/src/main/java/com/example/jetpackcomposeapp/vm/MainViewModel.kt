@@ -14,7 +14,7 @@ class MainViewModel @Inject constructor(
 
     val users = mutableStateOf<List<User>>(listOf())
 
-    val user = mutableStateOf(User(0, "0", "0", "0", "0"))
+    val user = mutableStateOf(User())
 
     suspend fun getAllUsers() {
         users.value = dataSource.getAllUsers()

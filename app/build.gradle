@@ -79,10 +79,8 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
 
-    // Navigation Component
-    def nav_version = "2.3.5"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    // Compose Navigation
+    implementation "androidx.navigation:navigation-compose:2.0.0"
 
     // Compose Glide
     implementation "com.github.skydoves:landscapist-glide:1.4.4"

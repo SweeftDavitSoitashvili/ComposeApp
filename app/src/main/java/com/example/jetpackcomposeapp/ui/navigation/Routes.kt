@@ -1,4 +1,4 @@
-package com.example.jetpackcomposeapp.ui
+package com.example.jetpackcomposeapp.ui.navigation
 
 /**
  * Created by Davit Soitashvili on 16.12.21

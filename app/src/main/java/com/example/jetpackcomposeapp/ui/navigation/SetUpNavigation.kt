@@ -1,6 +1,7 @@
 package com.example.jetpackcomposeapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -15,10 +16,10 @@ import com.example.jetpackcomposeapp.vm.MainViewModel
  **/
 
 @Composable
-fun SetUpNavigation(navController : NavHostController, mainViewModel : MainViewModel) {
+fun SetUpNavigation(navController : NavHostController) {
     NavHost(navController = navController, startDestination = Routes.Users.routeName, builder = {
         composable(Routes.Users.routeName) {
-            Users(mainViewModel = mainViewModel, navController = navController)
+            Users(navController = navController)
         }
         composable(Routes.UserDetails.routeName,
             arguments = listOf(
@@ -26,7 +27,7 @@ fun SetUpNavigation(navController : NavHostController, mainViewModel : MainViewM
                     type = NavType.IntType
                 },)) {
             val userId = it.arguments?.getInt(USER_ID_KEY)
-            UserDetails(userId = userId!!, mainViewModel = mainViewModel)
+            UserDetails(userId = userId!!)
         }
     })
 }

@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.jetpackcomposeapp.data.models.User
 import com.example.jetpackcomposeapp.vm.MainViewModel
@@ -28,7 +29,9 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun Users(mainViewModel : MainViewModel, navController: NavController) {
+fun Users(navController: NavController)
+{
+    val mainViewModel : MainViewModel = hiltViewModel()
     rememberCoroutineScope().launch {
         mainViewModel.getAllUsers()
     }

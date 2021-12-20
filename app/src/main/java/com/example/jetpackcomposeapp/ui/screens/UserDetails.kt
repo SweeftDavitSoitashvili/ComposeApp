@@ -15,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.jetpackcomposeapp.vm.MainViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
@@ -25,7 +26,8 @@ import kotlinx.coroutines.launch
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-fun UserDetails(userId: Int, mainViewModel: MainViewModel) {
+fun UserDetails(userId: Int) {
+    val mainViewModel : MainViewModel = hiltViewModel()
     rememberCoroutineScope().launch {
         mainViewModel.getUser(userId)
     }

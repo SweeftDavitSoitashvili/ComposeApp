@@ -43,8 +43,8 @@ class MainActivity : ComponentActivity() {
        
     }
     
-    
 }
+
 
 @Composable
 fun MyScreen(mainViewModel: MainViewModel?) {

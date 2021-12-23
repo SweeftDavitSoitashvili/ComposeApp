@@ -40,8 +40,11 @@ class MainActivity : ComponentActivity() {
                 MyScreen(mainViewModel = mainViewModel)
             }
         }
+       
     }
+    
 }
+
 
 @Composable
 fun MyScreen(mainViewModel: MainViewModel?) {
